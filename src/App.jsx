@@ -1,10 +1,11 @@
 import './App.css'
+import CharacterTabs from './components/CharacterTabs/CharacterTabs'
 
 function App() {
 
   return (
     <>
-      <p> Hello </p>
+      <CharacterTabs />
     </>
   )
 }
