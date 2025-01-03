@@ -6,8 +6,9 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import { memo, useState } from 'react';
 import './CharacterTabs.css'
+import BossTracker from '../BossTracker/BossTracker';
 
-class Character{
+class Character {
     constructor(name) {
         this.name = name;
         this.bosses = new Array(26);
@@ -24,8 +25,10 @@ function CharacterTabs() {
 
     const handleClick = () => {
         const name = prompt('Enter character name');
-        updateChars(name);
-        console.log(characters);
+        if (name) {
+            updateChars(name);
+            console.log(characters);
+        }
     }
 
     return (
@@ -36,7 +39,7 @@ function CharacterTabs() {
         >
             <Row>
                 <Col sm={4} lg={2}>
-                <h1 className='text-center'>Characters</h1>
+                    <h1 className='text-center'>Characters</h1>
                     <Nav variant="pills" className="flex-column">
                         <CreateTabs characters={characters} />
                     </Nav>
@@ -59,19 +62,19 @@ function CharacterTabs() {
 
 function CreateTabs({ characters }) {
     return (
-        characters.map((char, index) => {
-            return <TabItem key={char.id} name={char.name} index={index} tabClassName/>
+        characters.map((char) => {
+            return <TabItem key={char.id} name={char.name} index={char.id} tabClassName />
         })
     );
 }
 
-function CreateTabContents( {characters}) {
+function CreateTabContents({ characters }) {
     return (
-        characters.map( (char, index) => {
+        characters.map((char) => {
             return (
-            <Tab.Pane key={char.id} eventKey={index}>
-                `This is content`a
-            </Tab.Pane>
+                <Tab.Pane key={char.id} eventKey={char.id}>
+                    <BossTracker />
+                </Tab.Pane>
             )
         })
     )

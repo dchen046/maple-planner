@@ -51,8 +51,8 @@
 // }
 
 
-export const map = {
-    hila: { 
+export const bossMap = {
+    hilla: { 
         hard: 0 
     },
     pinkbean: {
@@ -86,7 +86,7 @@ export const map = {
     papulatus: {
         hard: 132.250
     },
-    aketchi: {
+    akechi: {
         hard: 144
     },
     lotus: {
