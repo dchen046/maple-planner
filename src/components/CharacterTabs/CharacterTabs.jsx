@@ -49,12 +49,7 @@ function CharacterTabs() {
                 <Col sm={8} lg={10}>
                     <h1>Information</h1>
                     <Tab.Content>
-                        <Tab.Pane eventKey="1">
-                            First tab content
-                        </Tab.Pane>
-                        <Tab.Pane eventKey="2">
-                            2nd tab stuff
-                        </Tab.Pane>
+                        <CreateTabContents characters={characters} />
                     </Tab.Content>
                 </Col>
             </Row>
@@ -68,6 +63,18 @@ function CreateTabs({ characters }) {
             return <TabItem key={char.id} name={char.name} index={index} tabClassName/>
         })
     );
+}
+
+function CreateTabContents( {characters}) {
+    return (
+        characters.map( (char, index) => {
+            return (
+            <Tab.Pane key={char.id} eventKey={index}>
+                `This is content`a
+            </Tab.Pane>
+            )
+        })
+    )
 }
 
 const TabItem = memo(({ name, index }) => {
