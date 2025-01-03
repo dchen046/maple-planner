@@ -2,19 +2,20 @@ import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
-import { Button } from 'react-bootstrap';
-import { memo, useState } from 'react';
+import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
+import { memo, useState } from 'react';
+import './CharacterTabs.css'
 
 class Character{
     constructor(name) {
         this.name = name;
         this.bosses = new Array(26);
+        this.id = Date.now();
     }
 }
 
 function CharacterTabs() {
-
     const [characters, setCharacters] = useState([]);
 
     const updateChars = (name) => {
@@ -29,22 +30,24 @@ function CharacterTabs() {
 
     return (
         <Tab.Container
-            id="left-tabs"
+            id="character-tabs"
             defaultActiveKey="0"
             transition={false}
         >
             <Row>
-                <Col sm={2}>
+                <Col sm={4} lg={2}>
+                <h1 className='text-center'>Characters</h1>
                     <Nav variant="pills" className="flex-column">
                         <CreateTabs characters={characters} />
                     </Nav>
                     <Button
-                        variant='outline-success' className='w-100'
+                        variant='outline-success' className='w-100 mt-2'
                         onClick={handleClick}>
                         + Add
                     </Button>
                 </Col>
-                <Col sm={10}>
+                <Col sm={8} lg={10}>
+                    <h1>Information</h1>
                     <Tab.Content>
                         <Tab.Pane eventKey="1">
                             First tab content
@@ -62,7 +65,7 @@ function CharacterTabs() {
 function CreateTabs({ characters }) {
     return (
         characters.map((char, index) => {
-            return <TabItem key={index} name={char.name} index={index} />
+            return <TabItem key={char.id} name={char.name} index={index} tabClassName/>
         })
     );
 }

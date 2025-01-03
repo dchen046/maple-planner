@@ -1,5 +1,5 @@
 import './App.css'
-import CharacterTabs from './components/CharacterTabs'
+import CharacterTabs from './components/CharacterTabs/CharacterTabs'
 
 function App() {
 
