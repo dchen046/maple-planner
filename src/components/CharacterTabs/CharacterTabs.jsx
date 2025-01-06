@@ -38,7 +38,7 @@ function CharacterTabs() {
             transition={false}
         >
             <Row>
-                <Col sm={4} lg={2}>
+                <Col lg={3}>
                     <h1 className='text-center'>Characters</h1>
                     <Nav variant="pills" className="flex-column">
                         <CreateTabs characters={characters} />
@@ -49,7 +49,7 @@ function CharacterTabs() {
                         + Add
                     </Button>
                 </Col>
-                <Col sm={8} lg={10}>
+                <Col g={9}>
                     <h1>Information</h1>
                     <Tab.Content>
                         <CreateTabContents characters={characters} />
@@ -73,7 +73,7 @@ function CreateTabContents({ characters }) {
         characters.map((char) => {
             return (
                 <Tab.Pane key={char.id} eventKey={char.id}>
-                    <BossTracker />
+                     <BossTracker />
                 </Tab.Pane>
             )
         })

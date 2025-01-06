@@ -53,7 +53,7 @@
 
 export const bossMap = {
     hilla: { 
-        hard: 0 
+        hard: 0
     },
     pinkbean: {
         hard: 0

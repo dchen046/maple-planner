@@ -2,37 +2,37 @@ import { bossMap } from "../utility/BossMappings"
 import './BossTracker.css'
 
 function BossTracker() {
-    return(
-        <>
-            <div className="boss-grid">
-                <CreateBossInfo />
-            </div>
-        </>
+    return (
+        <div className='boss-grid'>
+            <CreateBossInfo />
+        </div>
     )
 }
 
 function CreateBossInfo() {
     return (
-        Object.keys(bossMap).map( (boss,index) => {
+        Object.keys(bossMap).map((boss, index) => {
             const src = `/bosses/${boss}.png`
-            // console.log(src)
             return (
-                <>
+                <div key={index}>
                     <img src={src} />
-                </>
-
-
-                // Object.keys(bossMap[boss]).map( ((diffi, index) => {
-                //     return (
-                //         <p key={index}>
-                //             {boss} : {diffi} : {bossMap[boss][diffi]}
-                //         </p>
-                //     )
-                //     console.log(`${boss}: ${diffi} : ${bossMap[boss][diffi]}`);
-                // }))
-            )
+                    <CreateDiff boss={boss} />
+                </div>
+            );
         })
-    )
+    );
+}
+
+function CreateDiff({ boss }) {
+    return (
+        Object.keys(bossMap[boss]).map(((diff, index) => {
+            return (
+                <div key={index}>
+                    <p>{diff}</p>
+                </div>
+            );
+        }))
+    );
 }
 
 export default BossTracker;
