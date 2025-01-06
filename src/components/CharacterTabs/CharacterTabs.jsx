@@ -8,11 +8,11 @@ import { memo, useEffect, useState } from 'react';
 import './CharacterTabs.css'
 import BossTracker from '../BossTracker/BossTracker';
 import { Character } from '../utility/Character';
+import Summary from '../Summary/Summary';
 
 
 function CharacterTabs() {
     const [characters, setCharacters] = useState(() => {
-        // localStorage.clear();
         const chars = localStorage.getItem('characters');
         console.log(chars);
         return chars ? JSON.parse(chars) : [];
@@ -27,12 +27,17 @@ function CharacterTabs() {
         localStorage.setItem('characters', JSON.stringify(characters));
     }, [characters]);
 
-    const handleClick = () => {
+    const handleAdd = () => {
         const name = prompt('Enter character name');
         if (name) {
             updateChars(name);
             console.log(characters);
         }
+    }
+
+    const handleClear = () => {
+        localStorage.clear();
+        setCharacters( () => []);
     }
 
     return (
@@ -49,8 +54,13 @@ function CharacterTabs() {
                     </Nav>
                     <Button
                         variant='outline-success' className='w-100 mt-2'
-                        onClick={handleClick}>
+                        onClick={handleAdd}>
                         + Add
+                    </Button>
+                    <Button
+                        variant='outline-danger' className='w-100 mt-2'
+                        onClick={handleClear}>
+                        Clear
                     </Button>
                 </Col>
                 <Col g={9}>
@@ -78,6 +88,7 @@ function CreateTabContents({ characters }) {
             return (
                 <Tab.Pane key={char.id} eventKey={char.id}>
                      <BossTracker character={char}/>
+                     <Summary />
                 </Tab.Pane>
             )
         })

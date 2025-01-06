@@ -31,7 +31,7 @@ function CreateDiff({ character, boss }) {
     return (
         Object.keys(bossMap[boss]).map(((diff, index) => {
             const [count, setCount] = useState(() => {
-                return character.bossSize[boss][diff];
+                return character.bossSize[boss][diff] === 0 ? 1 : character.bossSize[boss][diff];
             });
 
             const updateCount = () => {
@@ -47,8 +47,8 @@ function CreateDiff({ character, boss }) {
                 }
                 updateCount();
                 character.bossSize[boss][diff] = count;
-                // console.log(`This is the saved count: ${character.bossSize[boss][diff]}`);
-                // console.log(character.bossSize)
+                console.log(`This is the saved count: ${character.bossSize[boss][diff]}`);
+                console.log(character.bossSize)
                 e.currentTarget.textContent = count;
             }
 
