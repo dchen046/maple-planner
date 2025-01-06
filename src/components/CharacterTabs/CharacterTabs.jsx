@@ -4,28 +4,43 @@ import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import './CharacterTabs.css'
+import BossTracker from '../BossTracker/BossTracker';
+import { Character } from '../utility/Character';
+import Summary from '../Summary/Summary';
 
-class Character{
-    constructor(name) {
-        this.name = name;
-        this.bosses = new Array(26);
-        this.id = Date.now();
-    }
-}
 
 function CharacterTabs() {
-    const [characters, setCharacters] = useState([]);
+    const [characters, setCharacters] = useState(() => {
+        const chars = localStorage.getItem('characters');
+        console.log(chars);
+        return chars ? JSON.parse(chars) : {};
+    });
 
     const updateChars = (name) => {
-        setCharacters((prev) => [...prev, new Character(name)]);
+        setCharacters((prev) => ({
+            ...prev,
+            [name]: new Character(name),
+        }));
+        // localStorage.setItem('characters', characters);
     }
 
-    const handleClick = () => {
+    useEffect(() => {
+        localStorage.setItem('characters', JSON.stringify(characters));
+    }, [characters]);
+
+    const handleAdd = () => {
         const name = prompt('Enter character name');
-        updateChars(name);
-        console.log(characters);
+        if (name) {
+            updateChars(name);
+            console.log(characters);
+        }
+    }
+
+    const handleClear = () => {
+        localStorage.clear();
+        setCharacters(() => []);
     }
 
     return (
@@ -35,21 +50,26 @@ function CharacterTabs() {
             transition={false}
         >
             <Row>
-                <Col sm={4} lg={2}>
-                <h1 className='text-center'>Characters</h1>
+                <Col lg={3}>
+                    <h1 className='text-center'>Characters</h1>
                     <Nav variant="pills" className="flex-column">
                         <CreateTabs characters={characters} />
                     </Nav>
                     <Button
                         variant='outline-success' className='w-100 mt-2'
-                        onClick={handleClick}>
+                        onClick={handleAdd}>
                         + Add
                     </Button>
+                    <Button
+                        variant='outline-danger' className='w-100 mt-2'
+                        onClick={handleClear}>
+                        Clear
+                    </Button>
                 </Col>
-                <Col sm={8} lg={10}>
+                <Col g={9}>
                     <h1>Information</h1>
                     <Tab.Content>
-                        <CreateTabContents characters={characters} />
+                        <CreateTabContents characters={characters} setCharacters={setCharacters} />
                     </Tab.Content>
                 </Col>
             </Row>
@@ -59,19 +79,34 @@ function CharacterTabs() {
 
 function CreateTabs({ characters }) {
     return (
-        characters.map((char, index) => {
-            return <TabItem key={char.id} name={char.name} index={index} tabClassName/>
+        Object.keys(characters).map((char) => {
+            const character = characters[char];
+            return <TabItem key={character.id} name={character.name} index={character.id} tabClassName />
         })
     );
 }
 
-function CreateTabContents( {characters}) {
+function CreateTabContents({ characters, setCharacters }) {
     return (
-        characters.map( (char, index) => {
+        Object.keys(characters).map((char) => {
+            const character = characters[char];
+            // console.log(character);
+            const handleDelete = () => {
+                setCharacters((prev) => {
+                    const newData = { ...prev }
+                    delete newData[char]
+                    return newData;
+                })
+                // delete characters[char];
+                // console.log(characters[char]);
+            }
+
             return (
-            <Tab.Pane key={char.id} eventKey={index}>
-                `This is content`a
-            </Tab.Pane>
+                <Tab.Pane key={character.id} eventKey={character.id}>
+                    <Summary />
+                    <BossTracker character={character} updateChar={setCharacters} />
+                    <Button variant='danger' onClick={handleDelete}>Delete</Button>
+                </Tab.Pane>
             )
         })
     )
