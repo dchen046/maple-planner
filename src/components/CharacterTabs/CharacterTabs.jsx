@@ -4,18 +4,28 @@ import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import './CharacterTabs.css'
 import BossTracker from '../BossTracker/BossTracker';
 import { Character } from '../utility/Character';
 
 
 function CharacterTabs() {
-    const [characters, setCharacters] = useState([]);
+    const [characters, setCharacters] = useState(() => {
+        // localStorage.clear();
+        const chars = localStorage.getItem('characters');
+        console.log(chars);
+        return chars ? JSON.parse(chars) : [];
+    });
 
     const updateChars = (name) => {
         setCharacters((prev) => [...prev, new Character(name)]);
+        localStorage.setItem('characters', characters);
     }
+
+    useEffect(() => {
+        localStorage.setItem('characters', JSON.stringify(characters));
+    }, [characters]);
 
     const handleClick = () => {
         const name = prompt('Enter character name');

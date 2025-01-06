@@ -2,7 +2,7 @@ export class Character {
     constructor(name) {
         this.name = name;
         this.id = Date.now();
-        this.bosses = {
+        this.bossSize = {
             hilla: { 
                 hard: 0
             },
