@@ -15,12 +15,15 @@ function CharacterTabs() {
     const [characters, setCharacters] = useState(() => {
         const chars = localStorage.getItem('characters');
         console.log(chars);
-        return chars ? JSON.parse(chars) : [];
+        return chars ? JSON.parse(chars) : {};
     });
 
     const updateChars = (name) => {
-        setCharacters((prev) => [...prev, new Character(name)]);
-        localStorage.setItem('characters', characters);
+        setCharacters((prev) => ({
+            ...prev,
+            [name] : new Character(name),
+        }));
+        // localStorage.setItem('characters', characters);
     }
 
     useEffect(() => {
@@ -37,7 +40,7 @@ function CharacterTabs() {
 
     const handleClear = () => {
         localStorage.clear();
-        setCharacters( () => []);
+        setCharacters(() => []);
     }
 
     return (
@@ -50,7 +53,7 @@ function CharacterTabs() {
                 <Col lg={3}>
                     <h1 className='text-center'>Characters</h1>
                     <Nav variant="pills" className="flex-column">
-                        <CreateTabs characters={characters} />
+                        <CreateTabs characters={characters}/>
                     </Nav>
                     <Button
                         variant='outline-success' className='w-100 mt-2'
@@ -66,7 +69,7 @@ function CharacterTabs() {
                 <Col g={9}>
                     <h1>Information</h1>
                     <Tab.Content>
-                        <CreateTabContents characters={characters} />
+                        <CreateTabContents characters={characters} setCharacters={setCharacters}/>
                     </Tab.Content>
                 </Col>
             </Row>
@@ -76,19 +79,22 @@ function CharacterTabs() {
 
 function CreateTabs({ characters }) {
     return (
-        characters.map((char) => {
-            return <TabItem key={char.id} name={char.name} index={char.id} tabClassName />
+        Object.keys(characters).map((char) => {
+            const character = characters[char];
+            return <TabItem key={character.id} name={character.name} index={character.id} tabClassName />
         })
     );
 }
 
-function CreateTabContents({ characters }) {
+function CreateTabContents({ characters, setCharacters}) {
     return (
-        characters.map((char) => {
+        Object.keys(characters).map((char) => {
+            const character = characters[char];
+            // console.log(character);
             return (
-                <Tab.Pane key={char.id} eventKey={char.id}>
-                     <BossTracker character={char}/>
-                     <Summary />
+                <Tab.Pane key={character.id} eventKey={character.id}>
+                    <Summary />
+                    <BossTracker character={character} updateChar={setCharacters}/>
                 </Tab.Pane>
             )
         })
