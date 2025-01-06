@@ -148,10 +148,10 @@ export const bossMap = {
 }
 
 export const colors = {
-    easy: 'gray',
-    normal: 'blue',
-    hard: 'red',
-    extreme: 'black',
+    easy: 'secondary',
+    normal: 'primary',
+    hard: 'danger',
+    extreme: 'warning',
 }
 
 

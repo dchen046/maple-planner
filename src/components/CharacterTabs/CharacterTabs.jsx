@@ -7,14 +7,8 @@ import PropTypes from 'prop-types';
 import { memo, useState } from 'react';
 import './CharacterTabs.css'
 import BossTracker from '../BossTracker/BossTracker';
+import { Character } from '../utility/Character';
 
-class Character {
-    constructor(name) {
-        this.name = name;
-        this.bosses = new Array(26);
-        this.id = Date.now();
-    }
-}
 
 function CharacterTabs() {
     const [characters, setCharacters] = useState([]);
@@ -73,7 +67,7 @@ function CreateTabContents({ characters }) {
         characters.map((char) => {
             return (
                 <Tab.Pane key={char.id} eventKey={char.id}>
-                     <BossTracker />
+                     <BossTracker character={char}/>
                 </Tab.Pane>
             )
         })
