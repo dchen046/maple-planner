@@ -21,7 +21,7 @@ function CharacterTabs() {
     const updateChars = (name) => {
         setCharacters((prev) => ({
             ...prev,
-            [name] : new Character(name),
+            [name]: new Character(name),
         }));
         // localStorage.setItem('characters', characters);
     }
@@ -53,7 +53,7 @@ function CharacterTabs() {
                 <Col lg={3}>
                     <h1 className='text-center'>Characters</h1>
                     <Nav variant="pills" className="flex-column">
-                        <CreateTabs characters={characters}/>
+                        <CreateTabs characters={characters} />
                     </Nav>
                     <Button
                         variant='outline-success' className='w-100 mt-2'
@@ -69,7 +69,7 @@ function CharacterTabs() {
                 <Col g={9}>
                     <h1>Information</h1>
                     <Tab.Content>
-                        <CreateTabContents characters={characters} setCharacters={setCharacters}/>
+                        <CreateTabContents characters={characters} setCharacters={setCharacters} />
                     </Tab.Content>
                 </Col>
             </Row>
@@ -86,15 +86,26 @@ function CreateTabs({ characters }) {
     );
 }
 
-function CreateTabContents({ characters, setCharacters}) {
+function CreateTabContents({ characters, setCharacters }) {
     return (
         Object.keys(characters).map((char) => {
             const character = characters[char];
             // console.log(character);
+            const handleDelete = () => {
+                setCharacters((prev) => {
+                    const newData = { ...prev }
+                    delete newData[char]
+                    return newData;
+                })
+                // delete characters[char];
+                // console.log(characters[char]);
+            }
+
             return (
                 <Tab.Pane key={character.id} eventKey={character.id}>
                     <Summary />
-                    <BossTracker character={character} updateChar={setCharacters}/>
+                    <BossTracker character={character} updateChar={setCharacters} />
+                    <Button variant='danger' onClick={handleDelete}>Delete</Button>
                 </Tab.Pane>
             )
         })
