@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import { bossMap, colors } from "../utility/BossMappings"
 import './BossTracker.css'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function BossTracker({ character, updateChar }) {
     return (
@@ -28,18 +28,23 @@ function CreateBossInfo({ character, updateChar }) {
 }
 
 function CreateDiff({ character, boss, updateChar }) {
+
     return (
         Object.keys(bossMap[boss]).map(((diff, index) => {
             const [count, setCount] = useState(() => {
-                return character.bossSize[boss][diff] === 0 ? 1 : character.bossSize[boss][diff];
+                return character.bossSize[boss][diff];
             });
 
             const updateCount = () => {
-                if (count >= 6) setCount(1);
-                else if (boss === 'lotus' && diff === 'extreme' && count >= 2) setCount(1);
-                else if (boss === 'limbo' && count >= 3) setCount(1);
-                else setCount((count) => count + 1);
+                setCount((count) => ++count);       
             }
+
+            useEffect( () => {
+                if (count > 6) setCount(1);
+                else if (boss === 'lotus' && diff === 'extreme' && count > 2) setCount(1);
+                else if (boss === 'limbo' && count > 3) setCount(1);
+                updateCharBossSize();
+            },[count])
 
             const updateCharBossSize = () => {
                 const name = character.name;
@@ -53,23 +58,22 @@ function CreateDiff({ character, boss, updateChar }) {
                                     ...prev[name].bossSize,
                                     [boss]: {
                                         ...prev[name].bossSize[boss],
-                                        [diff]: [count]
+                                        [diff]: count
                                     }
                                 }
                             }
                         }
                     )
-                })
+                });
+
             }
 
-
-            // ());
-
-            const onClick = (e) => {
+            const onClick = () => {
                 updateCount();
                 updateCharBossSize();
-                // console.log(`This is the saved count: ${character.bossSize[boss][diff]}`);
-                e.currentTarget.textContent = count;
+                // console.log(count);
+                // console.log(character.bossSize[boss]);
+                // e.currentTarget.textContent = count;
             }
 
             const variant = `outline-${colors[diff]}`;
@@ -79,7 +83,7 @@ function CreateDiff({ character, boss, updateChar }) {
                     variant={variant} className="m-1"
                     onClick={onClick}
                 >
-                    {character.bossSize[boss][diff] !== 0 ? character.bossSize[boss][diff] : ''}
+                    {count === 0 ? '' : count}
                 </Button>
             );
         }))

@@ -23,7 +23,6 @@ function CharacterTabs() {
             ...prev,
             [name]: new Character(name),
         }));
-        // localStorage.setItem('characters', characters);
     }
 
     useEffect(() => {
@@ -90,20 +89,17 @@ function CreateTabContents({ characters, setCharacters }) {
     return (
         Object.keys(characters).map((char) => {
             const character = characters[char];
-            // console.log(character);
             const handleDelete = () => {
                 setCharacters((prev) => {
-                    const newData = { ...prev }
-                    delete newData[char]
-                    return newData;
+                    const newChars = { ...prev }
+                    delete newChars[char]
+                    return newChars;
                 })
-                // delete characters[char];
-                // console.log(characters[char]);
             }
 
             return (
                 <Tab.Pane key={character.id} eventKey={character.id}>
-                    <Summary />
+                    <Summary character={character} />
                     <BossTracker character={character} updateChar={setCharacters} />
                     <Button variant='danger' onClick={handleDelete}>Delete</Button>
                 </Tab.Pane>
