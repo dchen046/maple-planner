@@ -1,25 +1,25 @@
 import { Button } from "react-bootstrap";
 import { bossMap, colors } from "../utility/BossMappings"
 import './BossTracker.css'
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-function BossTracker({ character, updateChar }) {
+function BossTracker({ character, setCharacters }) {
     return (
         <div className='boss-grid'>
-            <CreateBossInfo character={character} updateChar={updateChar} />
+            <CreateBossInfo character={character} setCharacters={setCharacters} />
         </div>
     )
 }
 
-function CreateBossInfo({ character, updateChar }) {
+function CreateBossInfo({ character, setCharacters }) {
     return (
-        Object.keys(bossMap).map((boss, index) => {
+        Object.keys(character.bossSize).map((boss, index) => {
             const src = `/bosses/${boss}.png`
             return (
                 <div key={index}>
                     <img src={src} />
                     <div className="btn-container">
-                        <CreateDiff character={character} boss={boss} updateChar={updateChar} />
+                        <CreateDiff character={character} boss={boss} setCharacters={setCharacters} />
                     </div>
                 </div>
             );
@@ -27,53 +27,59 @@ function CreateBossInfo({ character, updateChar }) {
     );
 }
 
-function CreateDiff({ character, boss, updateChar }) {
-
+function CreateDiff({character, boss, setCharacters }) {
     return (
-        Object.keys(bossMap[boss]).map(((diff, index) => {
-            const [count, setCount] = useState(() => {
-                return character.bossSize[boss][diff];
-            });
+        Object.keys(character.bossSize[boss]).map((diff, index) => {
+            const [count, setCount] = useState(character.bossSize[boss][diff]);
+            const isFirst = useRef(false);
 
-            const updateCount = () => {
-                setCount((count) => ++count);       
-            }
-
-            useEffect( () => {
-                if (count > 6) setCount(1);
-                else if (boss === 'lotus' && diff === 'extreme' && count > 2) setCount(1);
-                else if (boss === 'limbo' && count > 3) setCount(1);
-                updateCharBossSize();
-            },[count])
-
-            const updateCharBossSize = () => {
+            const updateCharBossSize = (level, value) => {
                 const name = character.name;
-                updateChar((prev) => {
-                    return (
-                        {
-                            ...prev,
-                            [name]: {
-                                ...prev[name],
-                                bossSize: {
-                                    ...prev[name].bossSize,
-                                    [boss]: {
-                                        ...prev[name].bossSize[boss],
-                                        [diff]: count
-                                    }
-                                }
+                setCharacters( (prev) => ({
+                    ...prev,
+                    [name]: {
+                        ...prev[name],
+                        bossSize : {
+                            ...prev[name].bossSize,
+                            [boss] : {
+                                ...prev[name].bossSize[boss],
+                                [level] : value
                             }
                         }
-                    )
-                });
-
+                    }
+                }));
             }
 
+            const updateCharBoss = () => {
+                Object.keys(character.bossSize[boss]).map((level) => {
+                    if (level === diff) {
+                        updateCharBossSize(level, count);
+                    } else {
+                        updateCharBossSize(level, 0);
+                    }
+                })
+            }
+
+            useEffect(() => {
+                isFirst.current = true;
+            },[]);
+            
+            
+
+            useEffect(() => {
+                if (!isFirst.current) {
+                    if (count > 6) setCount(0);
+                    else if (boss === 'lotus' && diff === 'extreme' && count > 2) setCount(0);
+                    else if (boss === 'limbo' && count > 3) setCount(0);
+                    updateCharBoss();
+                } else {
+                    isFirst.current = false;
+                }
+            }, [count]);
+
             const onClick = () => {
-                updateCount();
-                updateCharBossSize();
-                // console.log(count);
-                // console.log(character.bossSize[boss]);
-                // e.currentTarget.textContent = count;
+                console.log('clicked');
+                setCount(character.bossSize[boss][diff] + 1);                
             }
 
             const variant = `outline-${colors[diff]}`;
@@ -83,11 +89,11 @@ function CreateDiff({ character, boss, updateChar }) {
                     variant={variant} className="m-1"
                     onClick={onClick}
                 >
-                    {count === 0 ? '' : count}
+                    {character.bossSize[boss][diff] === 0 ? '' : character.bossSize[boss][diff]}
                 </Button>
             );
-        }))
-    );
+        })
+    )
 }
 
 export default BossTracker;

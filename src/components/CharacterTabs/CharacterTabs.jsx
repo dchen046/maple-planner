@@ -12,9 +12,9 @@ import Summary from '../Summary/Summary';
 
 
 function CharacterTabs() {
+    const [isLoading, setLoading] = useState(true);
     const [characters, setCharacters] = useState(() => {
         const chars = localStorage.getItem('characters');
-        console.log(chars);
         return chars ? JSON.parse(chars) : {};
     });
 
@@ -27,6 +27,10 @@ function CharacterTabs() {
 
     useEffect(() => {
         localStorage.setItem('characters', JSON.stringify(characters));
+        console.log(`what is saved: `);
+        console.log(characters);
+        console.log('saved');
+        setLoading(false);
     }, [characters]);
 
     const handleAdd = () => {
@@ -68,7 +72,7 @@ function CharacterTabs() {
                 <Col g={9}>
                     <h1>Information</h1>
                     <Tab.Content>
-                        <CreateTabContents characters={characters} setCharacters={setCharacters} />
+                        {isLoading ? 'Loadnig...' : <CreateTabContents characters={characters} setCharacters={setCharacters} /> }
                     </Tab.Content>
                 </Col>
             </Row>
@@ -100,7 +104,7 @@ function CreateTabContents({ characters, setCharacters }) {
             return (
                 <Tab.Pane key={character.id} eventKey={character.id}>
                     <Summary character={character} />
-                    <BossTracker character={character} updateChar={setCharacters} />
+                    <BossTracker character={character} setCharacters={setCharacters} />
                     <Button variant='danger' onClick={handleDelete}>Delete</Button>
                 </Tab.Pane>
             )
@@ -109,7 +113,6 @@ function CreateTabContents({ characters, setCharacters }) {
 }
 
 const TabItem = memo(({ name, index }) => {
-    console.log(name)
     return (
         <Nav.Item key={index}>
             <Nav.Link eventKey={index}>{name}</Nav.Link>
