@@ -16,7 +16,7 @@ function BossTracker({ character, setCharacters }) {
 function CreateBossInfo({ character, setCharacters }) {
     return (
         Object.keys(character.bossSize).map((boss, index) => {
-            const src = `/bosses/${boss}.png`
+            const src = `bosses/${boss}.png`
             return (
                 <div key={index}>
                     <img src={src} />
