@@ -3,7 +3,9 @@ This project is designed for MapleStory players who want to keep track of their 
 <p align="center">
   <img width="400" alt="Screenshot 2025-01-13 at 1 43 00 PM" src="https://github.com/user-attachments/assets/46f5c2db-2342-40dd-a320-b6046c68cafa" />
 </p>
-  
+
+https://dchen046.github.io/maple-planner/
+
 Instructions for usage:
 
 1. Press the add button on the left and input your character's name
