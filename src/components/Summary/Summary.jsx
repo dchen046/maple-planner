@@ -1,35 +1,39 @@
-import { useState } from "react";
 import { bossMap } from "../utility/BossMappings";
+import PropTypes from "prop-types";
 
 function Summary({ character }) {
-    const [mesos, setMesos] = useState(0);
     let total = 0;
     let crystals = 0;
-
+    const bosses = Object.keys(bossMap).reverse();
     const handleMesoCalc = () => {
-        const bosses = Object.keys(bossMap).reverse();
-        console.log(bosses);
-        for (const boss in bosses) {
-            if (crystals > 14) break;
-            console.log('inside')
-            let max = 0;
-            for (const diff in bossMap[boss]) {
+        bosses.map((boss) => {
+            // console.log(bossMap[boss]);
+            Object.keys(bossMap[boss]).map((diff) => {
+                // console.log('inin')
                 const size = character.bossSize[boss][diff];
                 const value = bossMap[boss][diff];
-                max = Math.max(max, value / size);
-                console.log(diff);
-            }
-            total += max;
-            ++crystals;
-        }
+                // console.log(`size : ${size} | val : ${value}`);
+                if (size > 0) {
+                    total += value / size
+                    ++crystals;
+                }
+            })
+        })
+        
     }
 
-    // handleMesoCalc();
+    handleMesoCalc();
+    // setMesos(total);
     // setMesos((prev) => prev + total);
     // console.log('render')
-    const mesosMsg = `Mesos Per Week: ${mesos}`;
-    const crystalMsg = `Amount of Crystals Sold: ${crystals}`;
+    let quant = 'M';
+    if (total >= 1000) {
+        total /= 1000;
+        quant = 'B';
+    }
 
+    const mesosMsg = `Mesos Per Week: ${total} ${quant}`;
+    const crystalMsg = `Amount of Crystals Sold: ${crystals}`;
 
     return (
         <>
@@ -37,6 +41,10 @@ function Summary({ character }) {
             <p>{crystalMsg}</p>
         </>
     )
+}
+
+Summary.propTypes = {
+    character: PropTypes.object.isRequired
 }
 
 export default Summary;

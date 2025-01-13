@@ -1,11 +1,13 @@
 .boss-grid {
     display: grid;
-    grid-template-columns: repeat(6, 65px);
+    grid-template-columns: repeat(auto-fit,  minmax(50px, 1fr));
     row-gap: 5px;
     column-gap: 0;
     text-align: center;
-    justify-content: center;
-    /* justify-content: space-evenly; */
+}
+
+@media screen {
+    
 }
 
 .btn-container {

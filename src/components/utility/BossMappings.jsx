@@ -53,14 +53,14 @@
 
 export const bossMap = {
     hilla: { 
-        hard: 0
+        hard: 56.250
     },
     pinkbean: {
-        hard: 0
+        hard: 64
     },
     cygnus: {
-        easy: 0,
-        normal: 0
+        easy: 45.5625,
+        normal: 72.25
     },
     zakum: { 
         hard: 81
@@ -78,7 +78,7 @@ export const bossMap = {
         normal: 81
     },
     magnus: {
-        hard: 0
+        hard: 95.0625
     },
     vellum: {
         hard: 105.0625
@@ -142,8 +142,8 @@ export const bossMap = {
         extreme: 6026
     },
     limbo: {
-        normal: 0,
-        hard: 0
+        normal: 2100,
+        hard: 3745
     }
 }
 

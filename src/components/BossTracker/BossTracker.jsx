@@ -82,7 +82,7 @@ function CreateDiff({character, boss, setCharacters }) {
                 setCount(character.bossSize[boss][diff] + 1);                
             }
 
-            const variant = `outline-${colors[diff]}`;
+            const variant = character.bossSize[boss][diff] === 0 ? `outline-${colors[diff]}` : `${colors[diff]}`;
             return (
                 <Button
                     key={index}
