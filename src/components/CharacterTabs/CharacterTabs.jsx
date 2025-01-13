@@ -36,7 +36,6 @@ function CharacterTabs() {
         const name = prompt('Enter character name');
         if (name) {
             updateChars(name);
-            console.log(characters);
         }
     }
 
@@ -81,7 +80,6 @@ function CharacterTabs() {
 }
 
 function CreateTabs({ characters }) {
-    console.log('Creating Tabs');
     return (
         Object.keys(characters).map((char) => {
             const character = characters[char];
@@ -111,9 +109,8 @@ function CreateTabContents({ characters, setCharacters }) {
                             <BossTracker character={character} setCharacters={setCharacters} />
                         </Col>
                         <Col lg={8}>
-                            <p>TODO</p>
+                            
                         </Col>
-
                         <Button variant='danger' className='mt-3' onClick={handleDelete}>Delete</Button>
                     </Row>
                 </Tab.Pane>

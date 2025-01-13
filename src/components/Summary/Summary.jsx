@@ -7,12 +7,9 @@ function Summary({ character }) {
     const bosses = Object.keys(bossMap).reverse();
     const handleMesoCalc = () => {
         bosses.map((boss) => {
-            // console.log(bossMap[boss]);
             Object.keys(bossMap[boss]).map((diff) => {
-                // console.log('inin')
                 const size = character.bossSize[boss][diff];
                 const value = bossMap[boss][diff];
-                // console.log(`size : ${size} | val : ${value}`);
                 if (size > 0) {
                     total += value / size
                     ++crystals;
@@ -23,9 +20,6 @@ function Summary({ character }) {
     }
 
     handleMesoCalc();
-    // setMesos(total);
-    // setMesos((prev) => prev + total);
-    // console.log('render')
     let quant = 'M';
     if (total >= 1000) {
         total /= 1000;
